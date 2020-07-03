@@ -42,8 +42,10 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void on_horizontalSlider_valueChanged(int value);
+
     void stepForward();
+
+    void on_horizontalSlider_sliderReleased();
 
 private:
     Ui::MainWindow *ui;

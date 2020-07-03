@@ -43,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent)
             this, SLOT(stepForward()));
 
 
+
+
 }
 
 MainWindow::~MainWindow()
@@ -55,21 +57,23 @@ void MainWindow::on_pushButton_clicked()
 {
     game = !game;
     startStop();
+
  }
 
 
 
-void MainWindow::on_horizontalSlider_valueChanged(int value)
+void MainWindow::on_horizontalSlider_sliderReleased()
 {
-    game = false;
     startStop();
 }
+
+
 
 
 void MainWindow::paintEvent(QPaintEvent *event){
 
     gameView = getGameView();
-    QPainter painter( this);
+    QPainter painter(this);
     QPen pen(Qt::black);
     QBrush brush(Qt::black);
     painter.setPen(pen);
@@ -100,17 +104,13 @@ void MainWindow::copyGrid(GameGrid& mainGrid, GameGrid& grid2){
 
 }
 
-void MainWindow::updateGameBoard()
-{
+void MainWindow::updateGameBoard(){
 
-       for(int i = 0; i < rPentomino.size(); ++i){
-         for(int j = 0; j < rPentomino[i].size(); j++){
+    for(unsigned int i = 0; i < rPentomino.size(); ++i){
+        for(unsigned int j = 0; j < rPentomino[i].size(); j++){
              mainGrid[gameRows/3 + i][gameColumns/8+j] = rPentomino[i][j];
-
-         }
-       }
-
-
+        }
+    }
 }
 
 void MainWindow::cellState(GameGrid& mainGrid)
@@ -186,8 +186,6 @@ GameGrid MainWindow::pentomino(){
     {0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
     };
 
-//            {{0,0,0},{1,1,1},{0,0,0}};
-
     return rPentomino;
 
 }
@@ -216,3 +214,4 @@ GameView MainWindow::getGameView()
     return gameView;
 
 }
+
