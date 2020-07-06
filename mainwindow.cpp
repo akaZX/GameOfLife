@@ -21,6 +21,7 @@ using namespace std;
 int gameColumns;
 int gameRows;
 const int cellSize = 10;
+const int topSpace = 50;
 const QString play = " ▶️ ";
 const QString pause = "❙❙";
 
@@ -75,7 +76,7 @@ void MainWindow::paintEvent(QPaintEvent *event){
     gameView = getGameView();
     QPainter painter(this);
     QPen pen(Qt::black);
-    QBrush brush(Qt::black);
+    QBrush brush(Qt::darkGray);
     painter.setPen(pen);
     painter.setBrush(brush);
     painter.drawRects(gameView);
@@ -83,14 +84,20 @@ void MainWindow::paintEvent(QPaintEvent *event){
 }
 
 
+//sutvarkyti kad resize didintu esama 2D vector, limituoti kiek leis sumazinti
+
 
 //updates size variables
 void MainWindow::resizeEvent(QResizeEvent *event){
     gameColumns = this->geometry().width() / cellSize;
-    gameRows = this-> frameGeometry().height() / cellSize;
+    gameRows = (this-> frameGeometry().height() - topSpace) / cellSize;
+
      mainGrid = GameGrid(gameRows, vector<int>(gameColumns, 0));
      flag = false;
      game = false;
+
+       cout << " rows: " << mainGrid.size() << ", columns: " << mainGrid[0].size() << endl;
+
      startStop();
 }
 
@@ -141,19 +148,16 @@ void MainWindow::cellState(GameGrid& mainGrid)
            }
          }
      }
-
-
 }
 
 void MainWindow::startStop()
 {
     if(game){
         ui->pushButton->setText(pause);
-
         timer->start(750 - ui->horizontalSlider->value());
     }else{
-         ui->pushButton->setText(play);
-       timer->stop();
+        ui->pushButton->setText(play);
+        timer->stop();
     }
 
 }
@@ -161,10 +165,16 @@ void MainWindow::startStop()
 void MainWindow::stepForward()
 {
 
-        if(!flag)    updateGameBoard();
+    //cheks for out of bounds
+    if(gameRows >= rPentomino.size() && gameColumns >= rPentomino[0].size()){
+        if(!flag){
+           updateGameBoard();
+        }
         update();
         flag = true;
         cellState(mainGrid);
+    }
+
 
 }
 
@@ -203,7 +213,7 @@ GameView MainWindow::getGameView()
             cell = mainGrid[row][col];
 
             if(cell == 1){
-                QRect rec(cellSize*col,50+cellSize*row,cellSize,cellSize);
+                QRect rec(cellSize*col,topSpace+cellSize*row,cellSize,cellSize);
                 gameView.append(rec);
 
             }
