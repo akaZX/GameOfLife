@@ -1,15 +1,16 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "gameoflife.h"
 #include <QMainWindow>
 #include <QPainter>
 #include <QTimer>
-#include <vector>
+
 #include <QVector>
 
 
 
-typedef std::vector<std::vector<int> > GameGrid;
+
 typedef  QVector<QRect> GameView;
 
 QT_BEGIN_NAMESPACE
@@ -28,12 +29,11 @@ public:
 
     bool flag;
     bool game;
-    QPainter painter;
-    GameGrid rPentomino;
+	
+    QPainter painter;   
     GameView gameView;
-    GameGrid mainGrid;
     QTimer *timer;
-
+	
 
 
     virtual void paintEvent(QPaintEvent *event);
@@ -42,19 +42,18 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-
     void stepForward();
-
     void on_horizontalSlider_sliderReleased();
 
 private:
+    
     Ui::MainWindow *ui;
-    GameGrid pentomino();
-    GameView getGameView();
-    void copyGrid(GameGrid&, GameGrid&);
+    GameOfLife gameOfLife;
+    void getGameView(GameView&);
+	
     void drawRect(QPainter&);
-    void updateGameBoard();
-    void cellState(GameGrid&);
+    
     void startStop();
+   
 };
 #endif // MAINWINDOW_H

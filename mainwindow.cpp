@@ -1,26 +1,21 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+
 #include <iostream>
 #include <vector>
-#include <unistd.h>
 #include <QTableView>
 #include <QVector>
 #include <QPushButton>
 #include <QThread>
 #include <QString>
-#include <unistd.h>
 
-
-typedef std::vector<std::vector<int> > GameGrid;
-typedef  QVector<QRect> GameView;
-
-using namespace std;
 
 
 
-int gameColumns;
-int gameRows;
-const int cellSize = 10;
+using namespace std;
+// GameOfLife gameOfLife;
+
+const int CELL_SIZE = 15;
 const int topSpace = 50;
 const QString play = " ▶️ ";
 const QString pause = "❙❙";
@@ -31,11 +26,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
 
     ui->setupUi(this);
+    gameOfLife.setColumns(this->geometry().width() / CELL_SIZE);
+    gameOfLife.setRows(((this->frameGeometry().height() - topSpace) / CELL_SIZE));
     flag = false;
-    game = false;
-    rPentomino = pentomino();
-    GameView gameView = getGameView();
-    mainGrid = GameGrid(gameRows, vector<int>(gameColumns, 0));
+    game = false;    
+
+    getGameView(gameView);
     timer = new QTimer(this);
 
      ui->pushButton->setText(play);
@@ -43,10 +39,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(timer, SIGNAL(timeout()),
             this, SLOT(stepForward()));
 
+    gameOfLife.update();
 
-
-
+    
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -70,85 +67,31 @@ void MainWindow::on_horizontalSlider_sliderReleased()
 
 
 
-
 void MainWindow::paintEvent(QPaintEvent *event){
 
-    gameView = getGameView();
+    std::cout << "   " << gameOfLife.getColumns() << "lentos plotis" << endl;
+    getGameView(gameView);
     QPainter painter(this);
     QPen pen(Qt::black);
     QBrush brush(Qt::darkGray);
     painter.setPen(pen);
     painter.setBrush(brush);
+
     painter.drawRects(gameView);
 
 }
 
 
-//sutvarkyti kad resize didintu esama 2D vector, limituoti kiek leis sumazinti
 
 
-//updates size variables
-void MainWindow::resizeEvent(QResizeEvent *event){
-    gameColumns = this->geometry().width() / cellSize;
-    gameRows = (this-> frameGeometry().height() - topSpace) / cellSize;
-
-     mainGrid = GameGrid(gameRows, vector<int>(gameColumns, 0));
-     flag = false;
-     game = false;
-
-       cout << " rows: " << mainGrid.size() << ", columns: " << mainGrid[0].size() << endl;
-
-     startStop();
+//not used ATM
+void MainWindow::resizeEvent(QResizeEvent *event)
+{     
 }
 
 
 
-void MainWindow::copyGrid(GameGrid& mainGrid, GameGrid& grid2){
 
-    for (unsigned int i = 0; i < mainGrid.size(); i++) {
-        for (unsigned int j = 0; j < mainGrid.size(); j++) { grid2[i][j] = mainGrid[i][j]; }
-    }
-
-}
-
-void MainWindow::updateGameBoard(){
-
-    for(unsigned int i = 0; i < rPentomino.size(); ++i){
-        for(unsigned int j = 0; j < rPentomino[i].size(); j++){
-             mainGrid[gameRows/3 + i][gameColumns/8+j] = rPentomino[i][j];
-        }
-    }
-}
-
-void MainWindow::cellState(GameGrid& mainGrid)
-{
-
-    GameGrid grid2(gameRows, vector<int>(gameColumns, 0));
-     copyGrid(mainGrid, grid2);
-
-     for (unsigned int i = 1; i < mainGrid.size()-1; i++) {
-         for (unsigned int b = 1; b < mainGrid[i].size()-1; b++) {
-             int life = 0;
-             for (int c = -1; c < 2; c++) {
-                 for (int d = -1; d < 2; d++) {
-                     if (!(c == 0 && d == 0)) {
-                         if (grid2[i + c][b + d] == 1) {
-                            ++life;
-                            }
-                     }
-                 }
-             }
-
-           if (life < 2) {
-               mainGrid[i][b] = 0; }
-           else if (life == 3) {
-               mainGrid[i][b] = 1; }
-           else if (life > 3) {
-               mainGrid[i][b] = 0;
-           }
-         }
-     }
-}
 
 void MainWindow::startStop()
 {
@@ -162,66 +105,43 @@ void MainWindow::startStop()
 
 }
 
+
 void MainWindow::stepForward()
 {
-
-    //cheks for out of bounds
-    if(gameRows >= rPentomino.size() && gameColumns >= rPentomino[0].size()){
-        if(!flag){
-           updateGameBoard();
+        if(!flag){ 	
+            gameOfLife.stepForward();
         }
         update();
-        flag = true;
-        cellState(mainGrid);
-    }
-
+        // flag = true;
+       
 
 }
 
 
 
 
-GameGrid MainWindow::pentomino(){
-
-            GameGrid rPentomino =
-    {
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-    {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-    {1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {1,1,0,0,0,0,0,0,0,0,1,0,0,0,1,0,1,1,0,0,0,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-    {0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
-    };
-
-    return rPentomino;
-
-}
-
-
-
-GameView MainWindow::getGameView()
+void MainWindow::getGameView(GameView& gameView)
 {
-    GameView gameView;
-    int cell= 0;
-
-    for (unsigned int row = 1; row  < mainGrid.size(); row++){
-
-        for (unsigned int col = 1; col < mainGrid[0].size(); col++){
-            cell = mainGrid[row][col];
-
+    
+    gameView.clear();
+ 
+	
+    for (unsigned int row = 1; row  < gameOfLife.gameBoard.size(); row++){
+	cout << gameOfLife.gameBoard.size() << endl;
+        for (unsigned int col = 1; col < gameOfLife.gameBoard[0].size(); col++){
+             int cell = gameOfLife.gameBoard[row][col];
+ 
             if(cell == 1){
-                QRect rec(cellSize*col,topSpace+cellSize*row,cellSize,cellSize);
+                QRect rec(CELL_SIZE *col,topSpace+ CELL_SIZE *row, CELL_SIZE, CELL_SIZE);
                 gameView.append(rec);
-
+                
+               
             }
-
+ 
         }
-
+ 
     }
-    return gameView;
+  
 
 }
 
