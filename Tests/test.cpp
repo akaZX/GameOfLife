@@ -15,7 +15,7 @@ public:
 
 bool compareTwoVectors(GameGrid &grid1, GameGrid& grid2)
 {
-	bool test = true;
+	
 
 	for (int i = 0; i < grid1.size(); i++)
 	{
@@ -28,7 +28,7 @@ bool compareTwoVectors(GameGrid &grid1, GameGrid& grid2)
 		}
 	}
 
-	return test;
+	return true;
 }
 
 
