@@ -1,14 +1,18 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=50ee90f9_002D675b_002D4cfa_002D96b1_002D5dfd55996b20/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="sample #3" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8cff3656_002Def97_002D4049_002Db981_002D0af57d65065e/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="CopyArray" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::GameOfLifeTest.CopyArray&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::GameOfLifeTest.CellState_1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::GameOfLifeTest.CellState_2&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::GameOfLifeTest.CellState_3&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::GameOfLifeTest.Reset&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::GameOfLifeTest.BlankBoard&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=9de78614_002D8bc7_002D448a_002D870b_002D6cff760325d7/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from test.cpp #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;ProjectFile&gt;2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5/f:test.cpp&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=907962ca_002D0876_002D4c34_002Da262_002D41babf62c9b0/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="sample" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::TestCaseName.sample&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=c76e7ccc_002D2bfc_002D4720_002Daa2b_002Db84281b984bd/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="sample #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;GTest::2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5::.NETFramework,Version=v4.0::TestCaseName.sample&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=dee3640e_002D82b9_002D4ca1_002D823f_002D8033594e0e16/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from test.cpp" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;ProjectFile&gt;2B5D1E98-EBAB-4ED7-BF04-DFCDA13A91C5/f:test.cpp&lt;/ProjectFile&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

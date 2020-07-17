@@ -20,20 +20,18 @@ public:
 	void reset();	
 	void setRows(int);
 	void setColumns(int);
-	int getRows();
-	int getColumns();
 	void update();
 	void cellState(GameGrid&);
+	void manageColumns();
 	void stepForward();
-
+	void copyGrid(GameGrid&, GameGrid&);
+	void blankBoard(GameGrid&);
 	
 private:
 
 	int rows;
 	int cols;
-
-	void blankBoard(GameGrid&);
-    void copyGrid(GameGrid&, GameGrid&);	
+	void manageColumns(std::vector<int>&, int&, GameGrid&);
 	GameGrid pentomino();	
 	void addFigureToBoard(GameGrid&, GameGrid);
 	

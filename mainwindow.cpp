@@ -3,22 +3,28 @@
 
 #include <iostream>
 #include <vector>
+#include <thread>
+#include <mutex>
+
 #include <QTableView>
 #include <QVector>
 #include <QPushButton>
-#include <QThread>
 #include <QString>
 
 
 
 
-using namespace std;
+
 // GameOfLife gameOfLife;
 
 const int CELL_SIZE = 15;
 const int topSpace = 50;
 const QString play = " ▶️ ";
 const QString pause = "❙❙";
+
+std::mutex m;
+
+void getRectangles(int , int , GameView& , GameOfLife& );
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -67,18 +73,17 @@ void MainWindow::on_horizontalSlider_sliderReleased()
 
 
 
-void MainWindow::paintEvent(QPaintEvent *event){
-
-    std::cout << "   " << gameOfLife.getColumns() << "lentos plotis" << endl;
+void MainWindow::paintEvent(QPaintEvent *event)
+{
+  
     getGameView(gameView);
     QPainter painter(this);
     QPen pen(Qt::black);
     QBrush brush(Qt::darkGray);
     painter.setPen(pen);
     painter.setBrush(brush);
-
     painter.drawRects(gameView);
-
+	
 }
 
 
@@ -108,40 +113,73 @@ void MainWindow::startStop()
 
 void MainWindow::stepForward()
 {
-        if(!flag){ 	
-            gameOfLife.stepForward();
-        }
-        update();
-        // flag = true;
-       
+    if (!flag) {
+        gameOfLife.stepForward();
+    }
+    update();
+    // flag = true;
+
+
+}
+
+void MainWindow::getGameView(GameView& gameView)
+{
+    gameView.clear();
+
+ 
+    std::vector<std::thread> threads;
+    int numOfThreads = std::thread::hardware_concurrency();
+	int totalRows = gameOfLife.gameBoard.size();
+    int stepSize = totalRows / (numOfThreads - 1);
+    int start = 1;
+    
+
+	
+    for(int i = 0; i < numOfThreads; i++)
+    {    	
+        threads.push_back(std::thread(getRectangles, start, (start + stepSize), std::ref(gameView), std::ref(gameOfLife)));           
+        start += stepSize;
+    }
+
+
+    for(auto &th : threads)
+    {
+        std::cout << " starting thread " << std::endl;
+    	if(th.joinable())
+			th.join();
+    }
+	
 
 }
 
 
 
 
-void MainWindow::getGameView(GameView& gameView)
-{
-    
-    gameView.clear();
- 
-	
-    for (unsigned int row = 1; row  < gameOfLife.gameBoard.size(); row++){
-	cout << gameOfLife.gameBoard.size() << endl;
-        for (unsigned int col = 1; col < gameOfLife.gameBoard[0].size(); col++){
-             int cell = gameOfLife.gameBoard[row][col];
- 
-            if(cell == 1){
-                QRect rec(CELL_SIZE *col,topSpace+ CELL_SIZE *row, CELL_SIZE, CELL_SIZE);
-                gameView.append(rec);
-                
-               
-            }
- 
-        }
- 
-    }
-  
 
+
+void getRectangles( int start, int to, GameView &gameView, GameOfLife &gameOfLife)
+{
+   
+    std::lock_guard<std::mutex> guard(m);    
+    for (int row = start; row < to; row++) {
+
+        if(gameOfLife.gameBoard.size() > row)
+        {
+
+        	 std::cout << gameOfLife.gameBoard.size() << std::endl;
+	        for (unsigned int col = 1; col < gameOfLife.gameBoard[0].size(); col++) {
+	            int cell = gameOfLife.gameBoard[row][col];
+
+	            if (cell == 1) {
+	                QRect rec(CELL_SIZE * col, topSpace + CELL_SIZE * row, CELL_SIZE, CELL_SIZE);
+	                gameView.append(rec);
+
+	            }
+
+	        }
+        }       
+
+    }
+   
 }
 

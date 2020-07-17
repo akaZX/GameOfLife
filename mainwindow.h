@@ -39,7 +39,7 @@ public:
     virtual void paintEvent(QPaintEvent *event);
     virtual void resizeEvent(QResizeEvent *event);
 
-
+   // void getRectangles(int, int, GameView&);
 private slots:
     void on_pushButton_clicked();
     void stepForward();
@@ -50,7 +50,7 @@ private:
     Ui::MainWindow *ui;
     GameOfLife gameOfLife;
     void getGameView(GameView&);
-	
+    
     void drawRect(QPainter&);
     
     void startStop();
