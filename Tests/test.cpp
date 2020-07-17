@@ -13,6 +13,27 @@ public:
 };
 
 
+bool compareTwoVectors(GameGrid &grid1, GameGrid& grid2)
+{
+	bool test = true;
+
+	for (int i = 0; i < grid1.size(); i++)
+	{
+		for (int j = 0; j < grid1[i].size(); j++)
+		{
+			if(grid1[i][j] != grid2[i][j])
+			{
+				return false;
+			}			
+		}
+	}
+
+	return test;
+}
+
+
+
+
 TEST_F(GameOfLifeTest, CopyArray)
 {
 	EXPECT_EQ(1, 1);
@@ -26,17 +47,11 @@ TEST_F(GameOfLifeTest, CopyArray)
 	
 	test.copyGrid(grid1, grid2);
 	
-		for(int i = 0; i < grid1.size(); i++)
-	{
-		for(int j = 0; j < grid1[i].size(); j++)
-		{
-			EXPECT_EQ(grid1[i][j], grid2[i][j]);
-		}
-	}
-	
+	EXPECT_TRUE(compareTwoVectors(grid1, grid2));
 }
 
-TEST_F(GameOfLifeTest, CellState_1)
+
+TEST_F(GameOfLifeTest, CellState_Still_1)
 {
 	GameGrid grid1 = {
 					{1,1},
@@ -54,7 +69,7 @@ TEST_F(GameOfLifeTest, CellState_1)
 	
 }
 
-TEST_F(GameOfLifeTest, CellState_2)
+TEST_F(GameOfLifeTest, CellState_Still_2)
 {
 	GameGrid grid1 = {
 					{0,0,0},
@@ -73,8 +88,35 @@ TEST_F(GameOfLifeTest, CellState_2)
 	
 }
 
+TEST_F(GameOfLifeTest, CellState_Still_3)
+{
+	GameGrid grid1 = {
+			{0,0,0,0,0,0},
+			{0,1,1,0,0,0},
+			{0,1,0,1,0,0},
+			{0,0,1,0,0,0},
+			{0,0,0,0,0,0},
+			{0,0,0,0,0,0} };
 
-TEST_F(GameOfLifeTest, CellState_3)
+	GameGrid grid2 = {
+			{0,0,0,0,0,0},
+			{0,1,1,0,0,0},
+			{0,1,0,1,0,0},
+			{0,0,1,0,0,0},
+			{0,0,0,0,0,0},
+			{0,0,0,0,0,0} };
+
+
+	test.cellState(grid1);
+
+
+
+	EXPECT_TRUE(compareTwoVectors(grid1, grid2));
+
+}
+
+
+TEST_F(GameOfLifeTest, CellState_Oscilator_1)
 {
 	GameGrid grid1 = {
 		{0,0,0,0,0},
@@ -94,21 +136,42 @@ TEST_F(GameOfLifeTest, CellState_3)
 	test.cellState(grid1);
 
 
-	for (int i =0; i< grid1.size(); i++)
-	{
-		for (int j = 0; j < grid1[i].size(); j++)
-		{
-			EXPECT_EQ(grid1[i][j], grid2[i][j]);
-		}
-	}
+	EXPECT_TRUE(compareTwoVectors(grid1, grid2));
 
 }
+
+TEST_F(GameOfLifeTest, CellState_Oscilator_2)
+{
+	GameGrid grid1 = {
+		{0,0,0,0,0,0},
+		{0,1,1,0,0,0},
+		{0,1,0,0,0,0},
+		{0,0,0,0,1,0},
+		{0,0,0,1,1,0},
+		{0,0,0,0,0,0} };
+
+
+	GameGrid grid2 = {
+		{0,0,0,0,0,0},
+		{0,1,1,0,0,0},
+		{0,1,1,0,0,0},
+		{0,0,0,1,1,0},
+		{0,0,0,1,1,0},
+		{0,0,0,0,0,0} };
+
+	test.cellState(grid1);
+
+	EXPECT_TRUE(compareTwoVectors(grid1, grid2));
+
+}
+
 
 TEST_F(GameOfLifeTest, BlankBoard)
 {
 	test.setRows(3);
 	test.setColumns(4);
 	GameGrid grid1;
+	std::cout << grid1.size() << std::endl;
 	test.blankBoard(grid1);
 
 
